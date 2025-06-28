@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { ShoppingList, ShoppingItem, ShoppingListSummary } from '@/types';
 import ShoppingItemComponent from './ShoppingItem';
 import AddItemForm from './AddItemForm';
@@ -15,11 +15,7 @@ export default function ShoppingListComponent({ listId, onListDeleted }: Shoppin
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
 
-  useEffect(() => {
-    fetchList();
-  }, [listId]);
-
-  const fetchList = async () => {
+  const fetchList = useCallback(async () => {
     try {
       const response = await fetch(`/api/lists/${listId}`);
       if (response.ok) {
@@ -31,7 +27,11 @@ export default function ShoppingListComponent({ listId, onListDeleted }: Shoppin
     } finally {
       setLoading(false);
     }
-  };
+  }, [listId]);
+
+  useEffect(() => {
+    fetchList();
+  }, [fetchList]);
 
   const handleItemAdded = (newItem: ShoppingItem) => {
     setList(prev => prev ? {

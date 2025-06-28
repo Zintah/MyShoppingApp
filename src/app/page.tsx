@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ShoppingList, ShoppingListSummary } from '@/types';
 import ShoppingListComponent from '@/components/ShoppingList';
 import NewListForm from '@/components/NewListForm';
@@ -16,11 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'lists' | 'catalog'>('lists');
 
-  useEffect(() => {
-    fetchLists();
-  }, []);
-
-  const fetchLists = async () => {
+  const fetchLists = useCallback(async () => {
     try {
       const response = await fetch('/api/lists');
       if (response.ok) {
@@ -58,7 +54,11 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedListId]);
+
+  useEffect(() => {
+    fetchLists();
+  }, [fetchLists]);
 
   const calculateListSummary = (items: any[]): ShoppingListSummary => {
     const completedItems = items.filter(item => item.completed);
@@ -156,7 +156,7 @@ export default function Home() {
                     Your Lists
                   </h2>
                   <span className="text-sm text-gray-500">
-                    {lists.length} list{lists.length !== 1 ? 's' : ''}
+                    {lists.length} list{lists.length !== 1 ? "s" : ""}
                   </span>
                 </div>
                 
