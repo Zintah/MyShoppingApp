@@ -298,7 +298,7 @@ export default function Home() {
                 <div>
                   <h4 className="font-medium mb-2">⚡ Quick Shopping</h4>
                   <ul className="space-y-1">
-                    <li>• Click "From Catalog" when adding items</li>
+                    <li>• Click &quot;From Catalog&quot; when adding items</li>
                     <li>• Items are automatically added to catalog</li>
                     <li>• Most used items appear first</li>
                     <li>• Search and filter for easy finding</li>
